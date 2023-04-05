@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 
-const API_URL = 'https://api.pupakindonesia.xyz/api/login';
+const API_URL = 'http://localhost:8080/api/login';
 
 export default function Home() {
   const router = useRouter();
