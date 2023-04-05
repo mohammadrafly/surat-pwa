@@ -56,7 +56,7 @@ export default function Dashboard() {
       ) : (
         <>
           <h1>Welcome to the Dashboard</h1>
-          <p>{dashboardData.message}</p>
+          <h1>{dashboardData.email}</h1>
           {errorMessage && <p>{errorMessage}</p>}
           <button onClick={handleLogout}>Logout</button>
         </>
