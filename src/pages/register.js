@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-const API_URL = 'http://localhost:8080/api/register';
+const API_URL = 'https://api.pupakindonesia.xyz/api/register';
 
 export default function Register() {
   const router = useRouter();

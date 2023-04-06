@@ -3,8 +3,8 @@ import { useRouter } from 'next/router';
 import BackButton from './backbutton';
 import MobileMenu from './mobilemenu';
 
-const DASHBOARD_API_URL = 'http://localhost:8080/api/my-profile/';
-const API_URL = 'http://localhost:8080/api/register';
+const DASHBOARD_API_URL = 'https://api.pupakindonesia.xyz/api/my-profile/';
+const API_URL = 'https://api.pupakindonesia.xyz/api/register';
 
 export default function Dashboard() {
   const [refreshing, setRefreshing] = useState(false);
