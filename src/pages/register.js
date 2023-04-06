@@ -1,6 +1,6 @@
-import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 const API_URL = 'https://api.pupakindonesia.xyz/api/register';
 
@@ -52,17 +52,19 @@ export default function Register() {
 
   return (
     <>
-      <div className="bg-gray-900 bg-cover flex justify-center items-center min-h-screen">
+    <div className="flex justify-center items-center bg-gray-300">
+      <div className="bg-gray-900 bg-cover flex justify-center items-center w-full max-w-md pt-[100px]">
         <div className="w-full max-w-md">
           <div className="flex flex-col items-center mb-6">
-            <img
-              className="h-16 w-auto"
-              src=""
+            <Image
+              width={150}
+              height={150}
+              src="/assets/logo.svg"
               alt="Logo"
             />
-            <h1 className="text-2xl text-white font-bold mt-2">Surat App</h1>
+            <h1 className="text-4xl text-white font-bold mt-2">Surat App</h1>
           </div>
-          <form onSubmit={handleFormSubmit} className="bg-white p-6 rounded-lg shadow-md">
+          <form onSubmit={handleFormSubmit} className="bg-white rounded-t-[40px] flex-1 min-h-screen overflow-y-scrollp p-5 w-full">
             <h2 className="text-xl font-bold mb-6">Sign Up</h2>
             {errorMessage && <p className="bg-red-500 rounded-lg text-white text-center p-2 m-5 transition-opacity">{errorMessage}</p>}
             {successMessage && <p className="animate-pulse bg-green-500 rounded-lg text-white text-center p-2 m-5 transition-opacity">{successMessage}</p>}
@@ -74,8 +76,9 @@ export default function Register() {
                 type="name"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 placeholder="Name"
+                required
               />
             </div>
             <div className="mb-4">
@@ -86,8 +89,9 @@ export default function Register() {
                 type="email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 placeholder="Email"
+                required
               />
             </div>
             <div className="mb-6">
@@ -98,8 +102,9 @@ export default function Register() {
                 type="password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                 placeholder="********"
+                required
               />
             </div>
             <div className="flex justify-between items-center">
@@ -139,6 +144,7 @@ export default function Register() {
           </form>
         </div>
       </div>
+    </div>
     </>
   );
 }
