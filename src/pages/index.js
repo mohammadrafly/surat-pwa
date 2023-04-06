@@ -52,7 +52,6 @@ export default function Home() {
     } finally {
       setIsLoading(false);
     }
-    router.replace('/dashboard');
   };
   
   return (
