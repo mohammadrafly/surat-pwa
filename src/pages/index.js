@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 
-const API_URL = 'http://localhost:8080/api/login';
+const API_URL = 'https://api.pupakindonesia.xyz/api/login';
 
 export default function Home() {
   const router = useRouter();

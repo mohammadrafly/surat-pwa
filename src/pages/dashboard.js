@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import MobileMenu from './mobilemenu';
 
-const DASHBOARD_API_URL = 'http://localhost:8080/api/my-profile/';
+const DASHBOARD_API_URL = 'https://api.pupakindonesia.xyz/api/my-profile/';
 
 export default function Dashboard() {
   const router = useRouter();

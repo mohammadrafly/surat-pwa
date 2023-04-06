@@ -5,8 +5,8 @@ import MobileMenu from './mobilemenu';
 import Select from 'react-select'
 
 
-const DASHBOARD_API_URL = 'http://localhost:8080/api/my-profile/';
-const API_URL = 'http://localhost:8080/api/surat-kelahiran/';
+const DASHBOARD_API_URL = 'https://api.pupakindonesia.xyz/api/my-profile/';
+const API_URL = 'https://api.pupakindonesia.xyz/api/surat-kelahiran/';
 
 export default function Dashboard() {
   const router = useRouter();
