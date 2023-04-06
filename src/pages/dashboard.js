@@ -1,29 +1,11 @@
 import { useEffect, useState, useCallback } from 'react';
-import { useSession, getSession } from "next-auth/client";
 import { useRouter } from 'next/router';
 import BackButton from './backbutton';
 import MobileMenu from './mobilemenu';
 
 const DASHBOARD_API_URL = 'http://localhost:8080/api/my-profile/';
 
-export async function getServerSideProps(context) {
-    const session = await getSession(context);
-  
-    if (!session) {
-      return {
-        redirect: {
-          destination: "/login",
-          permanent: false,
-        },
-      };
-    }
-  
-    return {
-      props: {},
-    };
-  }
-
-function Dashboard() {
+export default function Dashboard() {
   const [refreshing, setRefreshing] = useState(false);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
@@ -133,5 +115,3 @@ function Dashboard() {
     </>
   );
 }
-
-export default Dashboard;
