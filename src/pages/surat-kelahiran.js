@@ -1,17 +1,18 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import BackButton from './backbutton';
 import MobileMenu from './mobilemenu';
+import Select from 'react-select'
+
 
 const DASHBOARD_API_URL = 'http://localhost:8080/api/my-profile/';
 const API_URL = 'http://localhost:8080/api/surat-kelahiran/';
 
 export default function Dashboard() {
-  const [refreshing, setRefreshing] = useState(false);
   const router = useRouter();
   const [namaLengkap, setNamaLengkap] = useState('');
   const [jenisKelamin, setJenisKelamin] = useState('');
-  const [diLahirkanDi, setDiLahirkanDi] = useState('');
+  const [dilahirkanDi, setDilahirkanDi] = useState('');
   const [kelahiranKe, setKelahiranKe] = useState('');
   const [anakKe, setAnakKe] = useState('');
   const [penolongKelahiran, setPenolongKelahiran] = useState('');
@@ -24,35 +25,57 @@ export default function Dashboard() {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    setIsLoading(true)
-      try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(API_URL, {
-          method: 'POST',
-          headers: { 
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({ name, email, password })
-        });
-
-        if (response.status === 401) {
-            setErrorMessage('Invalid login credentials.');
-        }
-        const data = await response.json();
-        if (data) {
-            setSuccessMessage('Success create user')
-        } else {
-            setErrorMessage('Unable to register. Please try again.');
-        }
-      } catch (error) {
-        console.error('An error occurred:', error);
-        setErrorMessage('Unable to register. Please try again.');
+    setIsLoading(true);
+    try {
+      const token = localStorage.getItem('token');
+      const author = dashboardData.email;
+      const formData = new FormData();
+      formData.append('nama_lengkap', namaLengkap);
+      formData.append('jenis_kelamin', jenisKelamin);
+      formData.append('dilahirkan_di', dilahirkanDi);
+      formData.append('kelahiran_ke', kelahiranKe);
+      formData.append('anak_ke', anakKe);
+      formData.append('penolong_kelahiran', penolongKelahiran);
+      formData.append('alamat_anak', alamatAnak);
+      formData.append('nik', nik);
+      formData.append('author', author);
+  
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData
+      });
+  
+      if (response.status === 401) {
+        setErrorMessage('Unauthorized.');
       }
+  
+      const data = await response.json();
+      console.log(data.status)
+      if (data.status == '201') {
+        setSuccessMessage('Success mengirim surat.');
+        setTimeout(() => {
+          setSuccessMessage(null);
+        }, 5000);
+      } else if (data.status == '403') {
+        setErrorMessage('Anda telah malakukan pengiriman surat.');
+        setTimeout(() => {
+          setErrorMessage(null);
+        }, 5000);
+      }
+    } catch (error) {
+      setErrorMessage('Upps terjadi error. Silahkan coba lagi.');
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 5000);
+    }
+  
     setTimeout(() => {
-      setIsLoading(false)
-    }, 5000)
-  };
+      setIsLoading(false);
+    }, 5000);
+  };  
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -89,6 +112,14 @@ export default function Dashboard() {
     }, 3000);
   };
 
+  const options = [
+    { value: 'laki-laki', label: 'Laki-laki' },
+    { value: 'perempuan', label: 'Perempuan' },
+  ]
+
+  const handleSelectChange = (option) => {
+    setJenisKelamin(option.value)
+  }
   return (
     <>
       <div className="flex justify-center items-center bg-gray-300">
@@ -97,7 +128,7 @@ export default function Dashboard() {
                 <div className="flex items-center justify-between py-10 px-4">
                     <h1 className="text-white text-4xl font-bold">Surat App</h1>
                     <div className="flex justify-center">
-                      <BackButton />
+                      <BackButton color={'text-white'}/>
                       <MobileMenu Logout={handleLogout}/>
                     </div>
                 </div>
@@ -106,8 +137,8 @@ export default function Dashboard() {
                       <h2 className="text-xl font-bold mb-6">Surat Kelahiran</h2>
                       {errorMessage && <p className="bg-red-500 rounded-lg text-white text-center p-2 m-5 transition-opacity">{errorMessage}</p>}
                       {successMessage && <p className="animate-pulse bg-green-500 rounded-lg text-white text-center p-2 m-5 transition-opacity">{successMessage}</p>}
-                      <div className="mb-4">
-                          <label className="block text-gray-700 font-bold mb-2" htmlFor="namaLengkap">
+                      <div className="mb-2">
+                          <label className="block text-gray-700 font-bold mb-2" htmlFor="input">
                               Nama Lengkap
                           </label>
                           <input
@@ -119,33 +150,94 @@ export default function Dashboard() {
                               required
                           />
                       </div>
-                      <div className="mb-4">
-                          <label className="block text-gray-700 font-bold mb-2" htmlFor="jenis Kelamin">
+                      <div className="mb-2">
+                          <label className="block text-gray-700 font-bold mb-2" htmlFor="input">
+                              NIK
+                          </label>
+                          <input
+                              type="number"
+                              value={nik}
+                              onChange={(event) => setNik(event.target.value)}
+                              className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                              placeholder="NIK"
+                              required
+                          />
+                      </div>
+                      <div className="mb-2">
+                          <label className="block text-gray-700 font-bold mb-2" htmlFor="select">
                               Jenis Kelamin
                           </label>
-                          <select 
-                            class="select shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            value={jenisKelamin}
-                            onChange={(event) => setJenisKelamin(event.target.value)}
-                            required
-                          >
-                            <option value="laki-laki">Laki-laki</option>
-                            <option value="perempuan">Perempuan</option>
-                          </select>
+                          <Select 
+                            options={options} 
+                            value={jenisKelamin} 
+                            onChange={handleSelectChange} 
+                          />
                       </div>
-                      <div className="mb-6">
-                          <label className="block text-gray-700 font-bold mb-2" htmlFor="diLahirkanDi">
+                      <div className="mb-2">
+                          <label className="block text-gray-700 font-bold mb-2" htmlFor="input">
                               Dilahirkan di
+                          </label>
+                          <textarea
+                              type="text"
+                              value={dilahirkanDi}
+                              onChange={(event) => setDilahirkanDi(event.target.value)}
+                              className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                              placeholder="Dilahirkan di rumah sakit"
+                              required
+                          ></textarea>
+                      </div>
+                      <div className="mb-2">
+                          <label className="block text-gray-700 font-bold mb-2" htmlFor="input">
+                              Kelahiran ke
+                          </label>
+                          <input
+                              type="number"
+                              value={kelahiranKe}
+                              onChange={(event) => setKelahiranKe(event.target.value)}
+                              className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                              placeholder="Kelahiran ke 1"
+                              required
+                          />
+                      </div>
+                      <div className="mb-2">
+                          <label className="block text-gray-700 font-bold mb-2" htmlFor="input">
+                              Anak ke
+                          </label>
+                          <input
+                              type="number"
+                              value={anakKe}
+                              onChange={(event) => setAnakKe(event.target.value)}
+                              className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                              placeholder="Anak ke 1"
+                              required
+                          />
+                      </div>
+                      <div className="mb-2">
+                          <label className="block text-gray-700 font-bold mb-2" htmlFor="input">
+                              Penolong Kelahiran
                           </label>
                           <input
                               type="text"
-                              value={diLahirkanDi}
-                              onChange={(event) => setDiLahirkanDi(event.target.value)}
-                              className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                              placeholder="Dilahirkan di"
+                              value={penolongKelahiran}
+                              onChange={(event) => setPenolongKelahiran(event.target.value)}
+                              className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                              placeholder="Bidan Ajeng"
                               required
                           />
-                          </div>
+                      </div>
+                      <div className="mb-2">
+                          <label className="block text-gray-700 font-bold mb-2" htmlFor="input">
+                              Alamat
+                          </label>
+                          <textarea
+                              type="text"
+                              value={alamatAnak}
+                              onChange={(event) => setAlamatAnak(event.target.value)}
+                              className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                              placeholder="Jl. Tempat tinggal"
+                              required
+                          ></textarea>
+                      </div>
                       <div className="flex justify-between items-center">
                           <button
                               className={`rounded-lg w-full bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${
@@ -176,7 +268,7 @@ export default function Dashboard() {
                                   ></path>
                               </svg>
                               ) : (
-                              'Sign Up'
+                              'Buat Surat'
                               )}
                           </button>
                       </div>

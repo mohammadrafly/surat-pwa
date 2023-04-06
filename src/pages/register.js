@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import BackButton from './backbutton';
 
 const API_URL = 'https://api.pupakindonesia.xyz/api/register';
 
@@ -107,8 +108,8 @@ export default function Register() {
                 required
               />
             </div>
-            <div className="flex justify-between items-center">
-            <button
+            <div className="flex-2 flex flex-col justify-center items-center">
+              <button
                 className={`rounded-lg w-full bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${
                   isLoading ? 'opacity-50 cursor-wait' : ''
                 }`}
@@ -140,6 +141,10 @@ export default function Register() {
                   'Sign Up'
                 )}
               </button>
+              <div className="mt-[100px] item-center justify-center">
+                <BackButton color={'text-gray-900'}/>
+                <p>Kembali</p>
+              </div>
             </div>
           </form>
         </div>
