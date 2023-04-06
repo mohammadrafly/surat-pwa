@@ -96,7 +96,7 @@ export default function Dashboard() {
     <>
     <div className="flex flex-col h-screen bg-gray-800">
         <div className="flex items-center justify-between bg-gray-800 py-10 px-4">
-            <h1 className="text-white text-lg font-bold">Surat App</h1>
+            <h1 className="text-white text-4xl font-bold">Surat App</h1>
             <div className="flex justify-center">
                 <BackButton />
                 <MobileMenu Logout={handleLogout}/>
@@ -104,14 +104,6 @@ export default function Dashboard() {
         </div>
         <div className="p-5 text-white">
             {refreshing && <div>Refreshing...</div>}
-            {isLoading ? (
-                <p>Loading...</p>
-            ) : (
-                <>
-                <h1 className="text-2xl font-semibold mb-6">{dashboardData.name}</h1>
-                {errorMessage && <p>{errorMessage}</p>}
-                </>
-            )}
         </div>
         <div className="bg-white rounded-t-[40px] flex-1 overflow-y-scrollp p-5">
             <div className="flex justify-center item-center px-4 py-2">
