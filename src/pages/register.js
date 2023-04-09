@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import BackButton from './backbutton';
+import BackButton from './components/backbutton';
+import API_BASE_URL from '../../config';
 
-const API_URL = 'https://api.pupakindonesia.xyz/api/register';
+const API_URL = `${API_BASE_URL}/api/register`;
 
 export default function Register() {
   const router = useRouter();
@@ -54,7 +55,7 @@ export default function Register() {
   return (
     <>
     <div className="flex justify-center items-center bg-gray-300">
-      <div className="bg-gray-900 bg-cover flex justify-center items-center w-full max-w-md pt-[100px]">
+      <div className="bg-gray-900 bg-cover flex justify-center items-center w-full max-w-md pt-[50px]">
         <div className="w-full max-w-md">
           <div className="flex flex-col items-center mb-6">
             <Image
@@ -65,7 +66,7 @@ export default function Register() {
             />
             <h1 className="text-4xl text-white font-bold mt-2">Surat App</h1>
           </div>
-          <form onSubmit={handleFormSubmit} className="bg-white rounded-t-[40px] flex-1 min-h-screen overflow-y-scrollp p-5 w-full">
+          <form onSubmit={handleFormSubmit} className="bg-white rounded-t-[40px] flex-1 overflow-y-scrollp p-5 w-full">
             <h2 className="text-xl font-bold mb-6">Sign Up</h2>
             {errorMessage && <p className="bg-red-500 rounded-lg text-white text-center p-2 m-5 transition-opacity">{errorMessage}</p>}
             {successMessage && <p className="animate-pulse bg-green-500 rounded-lg text-white text-center p-2 m-5 transition-opacity">{successMessage}</p>}
@@ -77,7 +78,7 @@ export default function Register() {
                 type="name"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
-                className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded-[15px] w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 placeholder="Name"
                 required
               />
@@ -90,7 +91,7 @@ export default function Register() {
                 type="email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-                className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded-[15px] w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 placeholder="Email"
                 required
               />
@@ -103,14 +104,14 @@ export default function Register() {
                 type="password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-                className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded-[15px] w-full py-3 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                 placeholder="********"
                 required
               />
             </div>
             <div className="flex-2 flex flex-col justify-center items-center">
               <button
-                className={`rounded-lg w-full bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${
+                className={`rounded-[15px] w-full bg-yellow-400 hover:bg-yellow-500 text-white text-xl font-bold py-4 px-4 rounded focus:outline-none focus:shadow-outline ${
                   isLoading ? 'opacity-50 cursor-wait' : ''
                 }`}
                 type="submit"
@@ -141,7 +142,7 @@ export default function Register() {
                   'Sign Up'
                 )}
               </button>
-              <div className="mt-[100px] item-center justify-center">
+              <div className="mt-[50px] item-center justify-center">
                 <BackButton color={'text-gray-900'}/>
                 <p>Kembali</p>
               </div>

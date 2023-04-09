@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import BackButton from './backbutton';
-import MobileMenu from './mobilemenu';
-import Select from 'react-select'
+import { getCookie, setCookie } from '../helper/Cookie';
+import BackButton from '../components/backbutton';
+import BottomNavbar from '../components/bottomnavbar';
+import Select from 'react-select';
+import API_BASE_URL from '../../../config';
 
-
-const DASHBOARD_API_URL = 'https://api.pupakindonesia.xyz/api/my-profile/';
-const API_URL = 'https://api.pupakindonesia.xyz/api/surat-kelahiran/';
+const DASHBOARD_API_URL = `${API_BASE_URL}/api/my-profile/`;
+const API_URL = `${API_BASE_URL}/api/surat-kelahiran/`;
 
 export default function Dashboard() {
   const router = useRouter();
@@ -27,7 +28,7 @@ export default function Dashboard() {
     event.preventDefault();
     setIsLoading(true);
     try {
-      const token = localStorage.getItem('token');
+      const token = getCookie('token');
       const author = dashboardData.email;
       const formData = new FormData();
       formData.append('nama_lengkap', namaLengkap);
@@ -80,7 +81,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const token = getCookie('token');
         if (!token) {
           router.push('/');
         }
@@ -104,14 +105,6 @@ export default function Dashboard() {
     fetchDashboardData();
   }, [router]);
 
-  const handleLogout = () => {
-    setIsLoggingOut(true);
-    setTimeout(() => { 
-      localStorage.removeItem('token');
-      router.push('/');
-    }, 3000);
-  };
-
   const options = [
     { value: 'laki-laki', label: 'Laki-laki' },
     { value: 'perempuan', label: 'Perempuan' },
@@ -129,10 +122,9 @@ export default function Dashboard() {
                     <h1 className="text-white text-4xl font-bold">Surat App</h1>
                     <div className="flex justify-center">
                       <BackButton color={'text-white'}/>
-                      <MobileMenu Logout={handleLogout}/>
                     </div>
                 </div>
-                <div className="bg-white rounded-t-[40px] flex-1 min-h-screen overflow-y-scrollp p-5 w-full">
+                <div className="bg-white rounded-t-[40px] flex-1 min-h-screen overflow-y-scrollp p-5 mb-20 w-full">
                     <form onSubmit={handleFormSubmit} className="p-6 w-full">
                       <h2 className="text-xl font-bold mb-6">Surat Kelahiran</h2>
                       {errorMessage && <p className="bg-red-500 rounded-lg text-white text-center p-2 m-5 transition-opacity">{errorMessage}</p>}
@@ -274,6 +266,7 @@ export default function Dashboard() {
                       </div>
                     </form>
                 </div>
+                <BottomNavbar dashboardData={dashboardData}/>
             </div>
         </div>
     </div>

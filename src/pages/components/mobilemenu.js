@@ -10,7 +10,9 @@ const MobileMenu = ({ Logout }) => {
         onClick={() => setIsOpen(!isOpen)}
         className="block text-gray-500 hover:text-white focus:text-white focus:outline-none"
       >
-        <svg className="h-10 w-10 text-white"  width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <rect x="4" y="4" width="6" height="6" rx="1" />  <rect x="14" y="4" width="6" height="6" rx="1" />  <rect x="4" y="14" width="6" height="6" rx="1" />  <rect x="14" y="14" width="6" height="6" rx="1" /></svg>
+        <svg className="h-10 w-10 text-white"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"/>
+        </svg>
       </button>
 
       <div
