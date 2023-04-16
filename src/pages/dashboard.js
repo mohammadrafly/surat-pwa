@@ -12,7 +12,6 @@ export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [dashboardData, setDashboardData] = useState({});
   const [errorMessage, setErrorMessage] = useState('');
-  const [isLoggingOut, setIsLoggingOut] = useState('');
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -48,15 +47,6 @@ export default function Dashboard() {
     return () => clearTimeout(timeoutId);
   }, [router]);  
 
-  const handleLogout = () => {
-    setIsLoggingOut(true);
-    setTimeout(() => { 
-      setCookie('token', '', { expires: -1 });
-      window.location.href = '/';
-      return null;
-    }, 3000);
-  };
-
   return (
     <>
     <div className="flex justify-center items-center bg-gray-300">
@@ -65,17 +55,10 @@ export default function Dashboard() {
                 <div className="flex items-center justify-between py-10 px-4">
                     <h1 className="text-white text-4xl font-bold">Surat App</h1>
                     <div className="flex justify-center">
-                        <MobileMenu Logout={handleLogout}/>
+                        <MobileMenu />
                     </div>
                 </div>
                 <div className="m-5 p-5 rounded-[30px] shadow-lg text-gray-900 bg-yellow-400">
-                  {isLoggingOut ? (
-                    <p className="animate-pulse">Logging out...</p>
-                  ) : (
-                    <>
-                      {errorMessage && <p>{errorMessage}</p>}
-                    </>
-                  )}
                   {isLoading ? (
                       <p className="animate-pulse">Loading...</p>
                   ) : (
@@ -110,7 +93,7 @@ export default function Dashboard() {
                                 </span>
                                 <div>
                                     <h2 className="text-gray-800 text-lg font-medium">Buat Surat</h2>
-                                    <p className="text-gray-500 mt-2">Permohonan untuk surat.</p>
+                                    <p className="text-gray-500 mt-2">Permohonan pembuatan surat surat.</p>
                                 </div>
                             </div>
                         </a>
@@ -135,8 +118,8 @@ export default function Dashboard() {
                                   <svg className="h-24 w-24 text-gray-900"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round">  <line x1="8" y1="6" x2="21" y2="6" />  <line x1="8" y1="12" x2="21" y2="12" />  <line x1="8" y1="18" x2="21" y2="18" />  <line x1="3" y1="6" x2="3.01" y2="6" />  <line x1="3" y1="12" x2="3.01" y2="12" />  <line x1="3" y1="18" x2="3.01" y2="18" /></svg>
                                 </span>
                                 <div>
-                                    <h2 className="text-gray-800 text-lg font-medium">Surat Masuk</h2>
-                                    <p className="text-gray-500 mt-2">Riwayat jenis surat.</p>
+                                    <h2 className="text-gray-800 text-lg font-medium">Riwayat Surat</h2>
+                                    <p className="text-gray-500 mt-2">Riwayat keluar masuk surat.</p>
                                 </div>
                             </div>
                         </a>

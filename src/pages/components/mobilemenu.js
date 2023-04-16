@@ -1,7 +1,18 @@
 import { useState } from 'react'
+import { setCookie } from '../helper/Cookie';
 
-const MobileMenu = ({ Logout }) => {
+const MobileMenu = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const handleLogout = () => {
+    setIsLoggingOut(true);
+    setTimeout(() => { 
+      setCookie('token', '', { expires: -1 });
+      window.location.href = '/';
+      return null;
+    }, 3000);
+  };
 
   return (
     <div>
@@ -21,9 +32,9 @@ const MobileMenu = ({ Logout }) => {
         }  md:bg-white bg-gray-800 fixed top-0 left-0 w-1/2 md:w-1/4 h-full z-10 transition-transform duration-300`}
       >
         <div className="flex flex-col h-full justify-center items-center">
-          <button onClick={Logout} className="flex items-center justify-center bg-yellow-400 p-2 rounded-lg">
+          <button onClick={handleLogout} disabled={isLoggingOut} className="flex items-center justify-center bg-yellow-400 p-2 rounded-lg">
             <svg className="h-7 w-7 text-black"  width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />  <path d="M7 12h14l-3 -3m0 6l3 -3" /></svg>
-            <p className="text-black font-medium text-xl">Logout</p>
+            <p className="text-black font-medium text-xl">{isLoggingOut ? 'Logging Out...' : 'Logout'}</p>
           </button>
         </div>
       </div>

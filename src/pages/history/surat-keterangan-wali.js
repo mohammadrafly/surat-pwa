@@ -86,16 +86,7 @@ export default function HistorySuratKelahiran() {
                     <div className="flex flex-wrap px-4 py-2">
                       <h1 className="text-gray-900 font-semibold">Riwayat Surat Kelahiran</h1>
                       {kelahiranData.map((item) => (
-                        <Item 
-                          key={item.id} 
-                          nik={item.nik} 
-                          id={item.id} 
-                          name={item.nama_lengkap} 
-                          created_at={item.created_at} 
-                          status={item.status_ttd} 
-                          disposisi={item.disposisi_surat}
-                          link={`${API_BASE_URL}/api/single/surat/kelahiran/`}
-                        />
+                        <Item key={item.id} nik={item.nik} id={item.id} name={item.nama_lengkap} created_at={item.created_at} status={item.status_ttd} disposisi={item.disposisi_surat}/>
                       ))}
                       {errorMessage && (
                         <p className="text-red-500">{errorMessage}</p>

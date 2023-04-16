@@ -151,7 +151,7 @@ export default function Home() {
                       'Sign In'
                     )}
                   </button>
-                  <button type="button" className="rounded-[15px] w-full bg-gray-900 hover:bg-gray-700 text-white text-xl font-bold py-4 px-4 rounded-lg focus:outline-none focus:shadow-outline">
+                  <button type="button" className="rounded-[15px] w-full bg-gray-900 hover:bg-gray-700 text-white text-xl font-bold py-4 px-4 focus:outline-none focus:shadow-outline">
                     <a href="/register">
                       Sign up
                     </a>

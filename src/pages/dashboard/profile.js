@@ -4,6 +4,7 @@ import { getCookie } from '../helper/Cookie';
 import BackButton from '../components/backbutton';
 import BottomNavbar from '../components/bottomnavbar';
 import API_BASE_URL from '../../../config';
+import MobileMenu from '../components/mobilemenu';
 
 const PROFILE_API_URL = `${API_BASE_URL}/api/my-profile/`;
 
@@ -53,9 +54,11 @@ export default function Profile() {
         <div className="bg-gray-900 bg-cover flex justify-center items-center w-full max-w-md">
             <div className="w-full max-w-md">
                 <div className="flex items-center justify-between py-10 px-4">
-                    <h1 className="text-white text-4xl font-bold">Surat App</h1>
                     <div className="flex justify-center">
                         <BackButton color={'text-white'}/>
+                    </div>
+                    <div className="flex justify-center">
+                        <MobileMenu />
                     </div>
                 </div>
                 <div className="bg-white lg:min-h-screen rounded-t-[40px] flex-1 overflow-y-scrollp p-5 w-full">

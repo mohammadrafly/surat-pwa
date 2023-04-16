@@ -4,32 +4,74 @@ import { getCookie } from '../helper/Cookie';
 import BackButton from '../components/backbutton';
 import BottomNavbar from '../components/bottomnavbar';
 import API_BASE_URL from '../../../config';
+import MobileMenu from '../components/mobilemenu';
 
-const CREATESURAT_API_URL = `${API_BASE_URL}/api/my-profile/`;
+const PROFILE_API_URL = `${API_BASE_URL}/api/my-profile/`;
 
-export default function CreateSurat() {
+export default function RiwayatSurat() {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
   const [dashboardData, setDashboardData] = useState({});
 
   const items = [
     {
       id: 1,
       title: 'Surat Kelahiran',
-      desc: 'Desc for Item 1',
       link: '/history/surat-kelahiran',
     },
     {
       id: 2,
       title: 'Surat Kematian',
-      desc: 'Desc for Item 2',
       link: '/history/surat-kematian',
     },
     {
       id: 3,
-      title: 'Surat SKCK',
-      desc: 'Description for Item 3',
-      link: '/history/skck',
+      title: 'Surat Keterangan Belum Pernah Menikah',
+      link: '/history/surat-keterangan-bpm',
+    },
+    {
+      id: 4,
+      title: 'Surat Keterangan Penghasilan',
+      link: '/history/surat-keterangan-penghasilan',
+    },
+    {
+      id: 5,
+      title: 'Surat Keterangan SKCK',
+      link: '/history/surat-keterangan-skck',
+    },
+    {
+      id: 6,
+      title: 'Surat Keterangan Tidak Mampu',
+      link: '/history/surat-keterangan-tm',
+    },
+    {
+      id: 7,
+      title: 'Surat Keterangan Wali',
+      link: '/history/surat-keterangan-wali',
+    },
+    {
+      id: 8,
+      title: 'Surat Pengantar Nikah',
+      link: '/history/surat-pengantar-nikah',
+    },
+    {
+      id: 9,
+      title: 'Surat Pengantar Permohonan KTP',
+      link: '/history/surat-pengantar-permohonan-ktp',
+    },
+    {
+      id: 10,
+      title: 'Surat Permohonan KK',
+      link: '/history/surat-permohonan-kk',
+    },
+    {
+      id: 11,
+      title: 'Surat Permohonan KTP',
+      link: '/history/surat-permohonan-ktp',
+    },
+    {
+      id: 12,
+      title: 'Surat Pernyataan',
+      link: '/history/surat-pernyataan',
     },
   ];
 
@@ -42,7 +84,7 @@ export default function CreateSurat() {
           return;
         }
   
-        const response = await fetch(`${CREATESURAT_API_URL}${token}`, {
+        const response = await fetch(`${PROFILE_API_URL}${token}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -56,7 +98,7 @@ export default function CreateSurat() {
         console.error('An error occurred:', error);
         setErrorMessage('Unable to fetch data. Please try again.');
       } finally {
-        setIsLoading(false);
+
       }
     };
   
@@ -73,13 +115,16 @@ export default function CreateSurat() {
         <div className="bg-gray-900 bg-cover flex justify-center items-center w-full max-w-md">
             <div className="w-full max-w-md">
                 <div className="flex items-center justify-between py-10 px-4">
-                    <h1 className="text-white text-4xl font-bold">Surat App</h1>
                     <div className="flex justify-center">
                         <BackButton color={'text-white'}/>
+                    </div>
+                    <div className="flex justify-center">
+                        <MobileMenu />
                     </div>
                 </div>
                 <div className="bg-white lg:min-h-screen rounded-t-[40px] flex-1 overflow-y-scrollp p-5 w-full">
                     <div className="flex flex-wrap px-4 py-2">
+                      <h1 className="font-bold"> Riwayat Surat</h1>
                         {items.map((item) => (
                             <a key={item.id} href={item.link} className="w-full w-1/2 p-2">
                                 <div className="bg-white rounded-[20px] shadow-md p-4 flex items-center">
@@ -88,7 +133,6 @@ export default function CreateSurat() {
                                     </span>
                                     <div>
                                         <h2 className="text-gray-800 text-lg font-medium">{item.title}</h2>
-                                        <p className="text-gray-500 mt-2">{item.desc}</p>
                                     </div>
                                 </div>
                             </a>

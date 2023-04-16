@@ -7,20 +7,20 @@ import Item from '../components/item';
 import API_BASE_URL from '../../../config';
 import MobileMenu from '../components/mobilemenu';
 
-const HISTORYSURATKELAHIRAN_API_URL = `${API_BASE_URL}/api/my-profile/`;
-const HISTORYSURAT_KELAHIRAN = `${API_BASE_URL}/api/surat-kelahiran`;
+const PROFILE = `${API_BASE_URL}/api/my-profile/`;
+const RIWAYAT = `${API_BASE_URL}/api/surat-kematian`;
 
-export default function HistorySuratKelahiran() {
+export default function HistorySurat() {
   const router = useRouter();
   const [dashboardData, setDashboardData] = useState({});
-  const [kelahiranData, setKelahiranData] = useState([]);
+  const [Data, setData] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    const fetchHistorySuratKelahiran = async () => {
+    const fetchHistorySurat = async () => {
       try {
         const token = getCookie('token');
-        const response = await fetch(HISTORYSURAT_KELAHIRAN, {
+        const response = await fetch(RIWAYAT, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -31,13 +31,13 @@ export default function HistorySuratKelahiran() {
         const data = await response.json();
         if (Array.isArray(data)) {
           console.log(data);
-          setKelahiranData(data);
+          setData(data);
         } else {
           console.error('Invalid response data:', data);
         }
       } catch (error) {
         console.error('An error occurred:', error);
-        setErrorMessage('Unable to fetch historySuratKelahiran data. Please try again.');
+        setErrorMessage('Unable to fetch historySurat data. Please try again.');
       }
     };
 
@@ -49,7 +49,7 @@ export default function HistorySuratKelahiran() {
           return;
         }
   
-        const response = await fetch(`${HISTORYSURATKELAHIRAN_API_URL}${token}`, {
+        const response = await fetch(`${PROFILE}${token}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ export default function HistorySuratKelahiran() {
     };
   
     fetchDashboardData();
-    fetchHistorySuratKelahiran();
+    fetchHistorySurat();
   }, [router]);  
 
   return (
@@ -84,8 +84,8 @@ export default function HistorySuratKelahiran() {
                 </div>
                 <div className="bg-white lg:min-h-screen rounded-t-[40px] flex-1 overflow-y-scrollp p-5 w-full">
                     <div className="flex flex-wrap px-4 py-2">
-                      <h1 className="text-gray-900 font-semibold">Riwayat Surat Kelahiran</h1>
-                      {kelahiranData.map((item) => (
+                      <h1 className="text-gray-900 font-semibold">Riwayat Surat Kematian</h1>
+                      {Data.map((item) => (
                         <Item 
                           key={item.id} 
                           nik={item.nik} 
@@ -94,7 +94,7 @@ export default function HistorySuratKelahiran() {
                           created_at={item.created_at} 
                           status={item.status_ttd} 
                           disposisi={item.disposisi_surat}
-                          link={`${API_BASE_URL}/api/single/surat/kelahiran/`}
+                          link={`${API_BASE_URL}/api/single/surat/kematian/`}
                         />
                       ))}
                       {errorMessage && (
