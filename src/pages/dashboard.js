@@ -1,11 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { getCookie, setCookie } from './helper/Cookie';
+import { getCookie } from './helper/Cookie';
 import MobileMenu from './components/mobilemenu';
-import BottomNavbar from './components/bottomnavbar';
-import API_BASE_URL from '../../config';
-
-const DASHBOARD_API_URL = `${API_BASE_URL}/api/my-profile/`;
+import BottomNavbar from './components/BottomNavbarNoSSR';
 
 export default function Dashboard() {
   const router = useRouter();
@@ -15,29 +12,14 @@ export default function Dashboard() {
 
   useEffect(() => {
     const fetchDashboardData = async () => {
-      const token = getCookie('token');
-      if (!token) {
+      const cookies = getCookie();
+      setDashboardData(cookies);
+      console.log(cookies)
+      if (!cookies.token) {
         router.push('/');
         return;
       }
-
-      try {
-        const response = await fetch(`${DASHBOARD_API_URL}${token}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        });
-  
-        const data = await response.json();
-        setDashboardData(data);
-      } catch (error) {
-        console.error('An error occurred:', error);
-        setErrorMessage('Unable to fetch dashboard data. Please try again.');
-      } finally {
-        setIsLoading(false);
-      }
+      setIsLoading(false);
     };
   
     const timeoutId = setTimeout(() => {
@@ -46,7 +28,6 @@ export default function Dashboard() {
   
     return () => clearTimeout(timeoutId);
   }, [router]);  
-
   return (
     <>
     <div className="flex justify-center items-center bg-gray-300">
@@ -74,7 +55,7 @@ export default function Dashboard() {
                           {dashboardData.role === 'kepala_desa' && (
                             <p>Kepala Desa</p>
                           )}
-                          {dashboardData.role === 'administrator' && (
+                          {dashboardData.role === 'admin' && (
                             <p>Administrator</p>
                           )}
                         </div>

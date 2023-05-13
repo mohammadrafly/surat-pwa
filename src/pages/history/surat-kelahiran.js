@@ -1,73 +1,41 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { getCookie } from '../helper/Cookie';
+import { getCookieByKey } from '../helper/Cookie';
 import BackButton from '../components/backbutton';
-import BottomNavbar from '../components/bottomnavbar';
+import BottomNavbar from '../components/BottomNavbarNoSSR';
 import Item from '../components/item';
-import API_BASE_URL from '../../../config';
+import apiEndpoints from '../../../config';
 import MobileMenu from '../components/mobilemenu';
-
-const HISTORYSURATKELAHIRAN_API_URL = `${API_BASE_URL}/api/my-profile/`;
-const HISTORYSURAT_KELAHIRAN = `${API_BASE_URL}/api/surat-kelahiran`;
 
 export default function HistorySuratKelahiran() {
   const router = useRouter();
-  const [dashboardData, setDashboardData] = useState({});
   const [kelahiranData, setKelahiranData] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
+  const role = getCookieByKey('role');
 
   useEffect(() => {
     const fetchHistorySuratKelahiran = async () => {
       try {
-        const token = getCookie('token');
-        const response = await fetch(HISTORYSURAT_KELAHIRAN, {
+        const email = getCookieByKey('email');
+        const token = getCookieByKey('token');
+        const response = await fetch(`${apiEndpoints.dashboard.surat.kelahiran}${email}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
         });
-    
+
         const data = await response.json();
-        if (Array.isArray(data)) {
-          console.log(data);
-          setKelahiranData(data);
-        } else {
-          console.error('Invalid response data:', data);
-        }
+        setKelahiranData(data);
       } catch (error) {
         console.error('An error occurred:', error);
-        setErrorMessage('Unable to fetch historySuratKelahiran data. Please try again.');
+        setErrorMessage('Unable to fetch kelahiran data. Please try again.');
       }
     };
 
-    const fetchDashboardData = async () => {
-      try {
-        const token = getCookie('token');
-        if (!token) {
-          router.push('/');
-          return;
-        }
-  
-        const response = await fetch(`${HISTORYSURATKELAHIRAN_API_URL}${token}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        });
-  
-        const data = await response.json();
-        setDashboardData(data);
-      } catch (error) {
-        console.error('An error occurred:', error);
-        setErrorMessage('Unable to fetch dashboard data. Please try again.');
-      }
-    };
-  
-    fetchDashboardData();
-    fetchHistorySuratKelahiran();
-  }, [router]);  
+    Promise.all([fetchHistorySuratKelahiran()]);
+  }, [router]);
 
   return (
     <>
@@ -94,7 +62,7 @@ export default function HistorySuratKelahiran() {
                           created_at={item.created_at} 
                           status={item.status_ttd} 
                           disposisi={item.disposisi_surat}
-                          link={`${API_BASE_URL}/api/single/surat/kelahiran/`}
+                          link={apiEndpoints.dashboard.surat.kelahiranSingle}
                         />
                       ))}
                       {errorMessage && (
@@ -102,7 +70,7 @@ export default function HistorySuratKelahiran() {
                       )}
                     </div>
                 </div>
-                <BottomNavbar dashboardData={dashboardData}/>
+                <BottomNavbar/>
             </div>
         </div>
     </div>

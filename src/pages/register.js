@@ -2,9 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import BackButton from './components/backbutton';
-import API_BASE_URL from '../../config';
-
-const API_URL = `${API_BASE_URL}/api/register`;
+import apiEndpoints from '../../config';
 
 export default function Register() {
   const router = useRouter();
@@ -19,7 +17,7 @@ export default function Register() {
     event.preventDefault();
     setIsLoading(true)
       try {
-        const response = await fetch(API_URL, {
+        const response = await fetch(`${apiEndpoints.auth.signUp}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name, email, password })
@@ -135,16 +133,14 @@ export default function Register() {
                     <path
                       className="opacity-75"
                       fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647zM20 12a8 8 0 01-8 8v-4a4 4 0 004-4h4zm-2-5.291A7.962 7.962 0 0120 12h4c0-3.042-1.135-5.824-3-7.938l-3 2.647z"
-                    ></path>
-                  </svg>
-                ) : (
-                  'Sign Up'
-                )}
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647zM20 12a8 8 0" />
+                      </svg>
+                      ) : (
+                        'Sign Up'
+                      )}
               </button>
-              <div className="mt-[50px] item-center justify-center">
+              <div className="mt-5">
                 <BackButton color={'text-gray-900'}/>
-                <p>Kembali</p>
               </div>
             </div>
           </form>

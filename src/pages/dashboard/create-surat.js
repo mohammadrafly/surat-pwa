@@ -1,17 +1,10 @@
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { getCookie, setCookie } from '../helper/Cookie';
+import { getCookieByKey } from '../helper/Cookie';
 import BackButton from '../components/backbutton';
-import BottomNavbar from '../components/bottomnavbar';
-import API_BASE_URL from '../../../config';
+import BottomNavbar from '../components/BottomNavbarNoSSR';
 import MobileMenu from '../components/mobilemenu';
 
-const PROFILE_API_URL = `${API_BASE_URL}/api/my-profile/`;
-
 export default function CreateSurat() {
-  const router = useRouter();
-  const [dashboardData, setDashboardData] = useState({});
-
   const items = [
     {
       id: 1,
@@ -75,39 +68,16 @@ export default function CreateSurat() {
     },
   ];
 
-  useEffect(() => {
-    const fetchDashboardData = async () => {
-      try {
-        const token = getCookie('token');
-        if (!token) {
-          router.push('/');
-          return;
-        }
-  
-        const response = await fetch(`${PROFILE_API_URL}${token}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        });
-  
-        const data = await response.json();
-        setDashboardData(data);
-      } catch (error) {
-        console.error('An error occurred:', error);
-        setErrorMessage('Unable to fetch createSurat data. Please try again.');
-      } finally {
-        
-      }
-    };
-  
-    const timeoutId = setTimeout(() => {
-      fetchDashboardData();
-    }, 3000);
-  
-    return () => clearTimeout(timeoutId);
-  }, [router]);  
+  const role = getCookieByKey('role');
+  const router = useRouter()
+
+  if (typeof window !== 'undefined') {
+    const token = getCookieByKey('token');
+
+    if (!token) {
+      router.push('/')
+    }
+  }
 
   return (
     <>
@@ -139,7 +109,7 @@ export default function CreateSurat() {
                       ))} 
                     </div>
                 </div>
-                <BottomNavbar dashboardData={dashboardData}/>
+                <BottomNavbar role={role}/>
             </div>
         </div>
     </div>

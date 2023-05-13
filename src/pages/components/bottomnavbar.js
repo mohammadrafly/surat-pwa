@@ -1,17 +1,20 @@
 import React from 'react';
 import Link from 'next/link';
+import { getCookieByKey } from '../helper/Cookie';
 
-const BottomNavbar = ({ dashboardData }) => {
+const role = getCookieByKey('role');
+
+const BottomNavbar = () => {
   return (
     <>
-        {dashboardData.role === 'warga' && (
+        {role === 'warga' && (
             <nav className="fixed bottom-0 bg-gray-900 flex justify-around items-center w-full max-w-md py-4 px-4">
                 <NavItem href="/dashboard" icon={<HomeIcon />} />
                 <NavItem href="/dashboard/create-surat" icon={<AddIcon />}  />
                 <NavItem href="/dashboard/profile" icon={<ProfileIcon />}  />
             </nav>
         )}
-        {dashboardData.role !== 'warga' && (
+        {role !== 'warga' && (
             <nav className="fixed bottom-0 bg-gray-900 flex justify-around items-center w-full max-w-md py-4 px-4">
                 <NavItem href="/dashboard" icon={<HomeIcon />} />
                 <NavItem href="/dashboard/profile" icon={<ProfileIcon />}  />

@@ -1,34 +1,38 @@
 import React, { useState } from 'react';
-import { getCookie } from '../helper/Cookie';
+import { getCookieByKey } from '../helper/Cookie';
 import Detail from './details';
 
 const Item = ({ id, name, created_at, status, disposisi, nik, link}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [itemDetail, setItemDetail] = useState(null);
-
-  const handleOpenModal = async () => {
-    const token = getCookie('token');
-    const response = await fetch(link + id, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const data = await response.json();
-    console.log(data);
-    setItemDetail(data);
-    setIsModalOpen(true);
+  
+  const fetchItemDetail = async () => {
+    try {
+      const token = getCookieByKey('token');
+      const response = await fetch(link + id, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      setItemDetail(data);
+      setIsModalOpen(true);
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
   };
-
-  const handleSave = () => {
-    
-  }
-
+  
+  const handleOpenModal = () => {
+    fetchItemDetail();
+  };
+  
   const handleCloseModal = () => {
     setItemDetail(null);
     setIsModalOpen(false);
   };
+  
 
   return (
     <>
@@ -95,13 +99,6 @@ const Item = ({ id, name, created_at, status, disposisi, nik, link}) => {
                         <Detail itemDetail={itemDetail} />
                       </div>
                       <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-                        <button
-                          type="button"
-                          onClick={handleSave}
-                          className="bg-blue-500 mb-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 text-base font-medium text-white hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm"
-                        >
-                          Save
-                        </button>
                         <button
                           type="button"
                           onClick={handleCloseModal}

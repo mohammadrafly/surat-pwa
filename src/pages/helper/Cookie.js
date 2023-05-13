@@ -11,6 +11,10 @@ export function setCookie(key, value, options = {}) {
   }
 }
 
-export function getCookie(key) {
+export function getCookie() {
+  return Cookies.get();
+}
+
+export function getCookieByKey(key) {
   return process.browser ? Cookies.get(key) : undefined;
 }

@@ -1,24 +1,23 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { setCookie, getCookie } from './helper/Cookie';
+import { setCookie, getCookieByKey } from './helper/Cookie';
 import Image from 'next/image';
-import API_BASE_URL from '../../config';
-
-const API_URL = `${API_BASE_URL}/api/login`;
+import apiEndpoints from '../../config';
 
 export default function Home() {
   const router = useRouter();
+  const token = getCookieByKey('token');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [frontend] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const token = getCookie('token');
 
   if (token) {
-    window.location.href = '/dashboard';
-    return;
+    router.push('/dashboard');
   }
+  
   useEffect(() => {
     if (errorMessage) {
       setIsVisible(true);
@@ -36,10 +35,14 @@ export default function Home() {
   
     setTimeout(async () => {
       try {
-        const response = await fetch(API_URL, {
+        const response = await fetch(`${apiEndpoints.auth.signIn}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password }),
+          body: JSON.stringify({ 
+            email, 
+            password, 
+            frontend
+          })
         });
   
         if (response.status === 401) {
@@ -47,9 +50,16 @@ export default function Home() {
         }
   
         const data = await response.json();
-  
         if (data.token) {
-          setCookie('token', data.token);
+          const cookiesToSet = [
+            { key: 'frontend', value: true },
+            { key: 'email', value: data.dataUser.email },
+            { key: 'token', value: data.token },
+            { key: 'name', value: data.dataUser.name },
+            { key: 'role', value: data.dataUser.role},
+            { key: 'created_at', value: data.dataUser.created_at},
+          ];
+          cookiesToSet.forEach(cookie => setCookie(cookie.key, cookie.value));
           router.push('/dashboard');
         } else if (data.error) {
           console.log(data);
@@ -80,8 +90,8 @@ export default function Home() {
                 />
                 <h1 className="text-4xl text-white font-bold mt-2">Surat App</h1>
               </div>
-              <form onSubmit={handleFormSubmit} className="bg-white lg:min-h-screen rounded-t-[40px] flex-1 p-5">
-                <h2 className="text-xl font-bold mb-6">Sign In</h2>
+              <form onSubmit={handleFormSubmit} className="bg-white rounded-t-[40px] p-5">
+                <h2 className="text-xl font-bold mb-6 text-center">Sign In</h2>
                 {errorMessage && (
                   <p
                     className={`bg-red-700 rounded-lg text-white text-center p-2 m-5 transition-opacity ${
@@ -118,9 +128,9 @@ export default function Home() {
                     required
                   />
                 </div>
-                <div className="flex-2 justify-center item-center">
+                <div className="flex flex-col">
                   <button
-                    className={`rounded-[15px] w-full bg-yellow-400 hover:bg-yellow-500 text-white text-xl font-bold py-4 px-4 focus:outline-none focus:shadow-outline mb-4 ${
+                    className={`rounded-[15px] bg-yellow-400 hover:bg-yellow-500 text-white text-xl font-bold py-4 px-4 focus:outline-none focus:shadow-outline mb-4 ${
                       isLoading ? 'opacity-50 cursor-wait' : ''
                     }`}
                     type="submit"
@@ -151,11 +161,12 @@ export default function Home() {
                       'Sign In'
                     )}
                   </button>
-                  <button type="button" className="rounded-[15px] w-full bg-gray-900 hover:bg-gray-700 text-white text-xl font-bold py-4 px-4 focus:outline-none focus:shadow-outline">
-                    <a href="/register">
-                      Sign up
-                    </a>
-                  </button>
+                  <a
+                    href="/register"
+                    className="text-sm font-bold text-center text-gray-700 hover:text-gray-900"
+                  >
+                    Don't have an account? Sign up here.
+                  </a>
                 </div>
               </form>
             </div>

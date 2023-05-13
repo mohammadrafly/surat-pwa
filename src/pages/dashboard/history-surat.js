@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { getCookie } from '../helper/Cookie';
+import { getCookie, getCookieByKey } from '../helper/Cookie';
 import BackButton from '../components/backbutton';
-import BottomNavbar from '../components/bottomnavbar';
-import API_BASE_URL from '../../../config';
+import BottomNavbar from '../components/BottomNavbarNoSSR';
+import apiEndpoints from '../../../config';
 import MobileMenu from '../components/mobilemenu';
-
-const PROFILE_API_URL = `${API_BASE_URL}/api/my-profile/`;
 
 export default function RiwayatSurat() {
   const router = useRouter();
@@ -78,13 +76,13 @@ export default function RiwayatSurat() {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const token = getCookie('token');
+        const token = getCookieByKey('token');
         if (!token) {
           router.push('/');
           return;
         }
   
-        const response = await fetch(`${PROFILE_API_URL}${token}`, {
+        const response = await fetch(`${apiEndpoints.dashboard.myProfile}${token}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

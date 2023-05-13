@@ -7,13 +7,13 @@ const MobileMenu = () => {
 
   const handleLogout = () => {
     setIsLoggingOut(true);
-    setTimeout(() => { 
-      setCookie('token', '', { expires: -1 });
+    setTimeout(() => {
+      const cookiesToExpire = ['token', 'frontend', 'name', 'email', 'role', 'created_at'];
+      cookiesToExpire.forEach(cookie => setCookie(cookie, '', { expires: -1 }));
       window.location.href = '/';
-      return null;
     }, 3000);
   };
-
+  
   return (
     <div>
       <button

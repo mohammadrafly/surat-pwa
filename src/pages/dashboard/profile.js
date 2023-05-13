@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { getCookie } from '../helper/Cookie';
+import { getCookieByKey } from '../helper/Cookie';
 import BackButton from '../components/backbutton';
-import BottomNavbar from '../components/bottomnavbar';
-import API_BASE_URL from '../../../config';
+import BottomNavbar from '../components/BottomNavbarNoSSR';
+import apiEndpoints from '../../../config';
 import MobileMenu from '../components/mobilemenu';
-
-const PROFILE_API_URL = `${API_BASE_URL}/api/my-profile/`;
 
 export default function Profile() {
   const router = useRouter();
@@ -17,22 +15,23 @@ export default function Profile() {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const token = getCookie('token');
+        const token = getCookieByKey('token');
         if (!token) {
           router.push('/');
           return;
         }
   
-        const response = await fetch(`${PROFILE_API_URL}${token}`, {
+        const response = await fetch(`${apiEndpoints.dashboard.myProfile}${token}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
+            'Authorization': `Bearer ${token}`,
           },
         });
-  
+
         const data = await response.json();
         setDashboardData(data);
+        console.log(data)
       } catch (error) {
         console.error('An error occurred:', error);
         setErrorMessage('Unable to fetch profile data. Please try again.');
@@ -101,7 +100,7 @@ export default function Profile() {
                           <dl>
                             <div className="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                               <dt className="text-sm font-medium text-gray-500">Joined</dt>
-                              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">-</dd>
+                              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{dashboardData.created_at}</dd>
                             </div>
                           </dl>
                         </div>
