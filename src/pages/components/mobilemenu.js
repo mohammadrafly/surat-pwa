@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { setCookie } from '../helper/Cookie';
+import { setCookie } from '../../components/helper/Cookie';
 
 const MobileMenu = () => {
   const [isOpen, setIsOpen] = useState(false)

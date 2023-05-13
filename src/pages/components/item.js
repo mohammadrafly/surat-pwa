@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getCookieByKey } from '../helper/Cookie';
+import { getCookieByKey } from '../../components/helper/Cookie';
 import Detail from './details';
 
 const Item = ({ id, name, created_at, status, disposisi, nik, link}) => {

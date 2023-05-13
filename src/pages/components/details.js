@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { getCookieByKey } from '../helper/Cookie';
+import { getCookieByKey } from '../../components/helper/Cookie';
 import axios from 'axios';
 import apiEndpoints from '../../../config';
 
-const Detail = ({ itemDetail }) => {
+const Detail = ({ itemDetail = {} }) => {
   const [statusTtd, setStatusTtd] = useState(itemDetail.status_ttd);
   const [isUpdating, setIsUpdating] = useState(false);
   const role = getCookieByKey('role');

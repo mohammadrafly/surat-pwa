@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { getCookie } from './helper/Cookie';
+import { getCookie } from '../components/helper/Cookie';
 import MobileMenu from './components/mobilemenu';
 import BottomNavbar from './components/BottomNavbarNoSSR';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { getCookieByKey } from '../helper/Cookie';
+import { getCookieByKey } from '../../components/helper/Cookie';
 
 const role = getCookieByKey('role');
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { getCookie, getCookieByKey } from '../helper/Cookie';
+import { getCookie, getCookieByKey } from '../../components/helper/Cookie';
 import BackButton from '../components/backbutton';
 import BottomNavbar from '../components/BottomNavbarNoSSR';
 import apiEndpoints from '../../../config';

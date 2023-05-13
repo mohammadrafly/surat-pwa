@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { setCookie, getCookieByKey } from './helper/Cookie';
+import { setCookie, getCookieByKey } from '../components/helper/Cookie';
 import Image from 'next/image';
 import apiEndpoints from '../../config';
 
