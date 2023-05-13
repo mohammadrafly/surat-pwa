@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 
-export function setCookie(key, value, options = {}) {
-  if (process.browser) {
+const setCookie = (key, value, options = {}) => {
+  if (typeof window !== 'undefined') {
     Cookies.set(key, value, {
       expires: 7, // Cookie will expire in 7 days
       secure: true, // Cookie will only be sent over HTTPS if your app is served over HTTPS
@@ -9,12 +9,10 @@ export function setCookie(key, value, options = {}) {
       ...options, // Cookie will be sent on cross-site requests with a safe HTTP method (GET, POST)
     });
   }
-}
+};
 
-export function getCookie() {
-  return Cookies.get();
-}
+const getCookie = () => Cookies.get();
 
-export function getCookieByKey(key) {
-  return process.browser ? Cookies.get(key) : undefined;
-}
+const getCookieByKey = (key) => (typeof window !== 'undefined' ? Cookies.get(key) : undefined);
+
+export { setCookie, getCookie, getCookieByKey };
