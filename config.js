@@ -1,5 +1,5 @@
-const baseUrl = 'http://localhost:8080';
-const apiUrl = '/api/V1/';
+const baseUrl = 'https://pupakindonesia.xyz/';
+const apiUrl = 'api/V1/';
 const kelahiranUrl = 'kelahiran/';
 
 const apiEndpoints = {
