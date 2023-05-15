@@ -50,9 +50,12 @@ export default function Dashboard() {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
+          'Access-Control-Allow-Origin': '*', // Allow requests from all domains
+          'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization' // Allow these headers
         },
         body: JSON.stringify(inputValues),
       });
+      
 
       if (response.status === 401) {
         setErrorMessage('Unauthorized.');
