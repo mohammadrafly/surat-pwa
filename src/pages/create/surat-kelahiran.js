@@ -47,7 +47,6 @@ export default function Dashboard() {
       const token = getCookieByKey('token');
       const response = await fetch(apiEndpoints.dashboard.surat.kelahiran, {
         method: 'POST',
-        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
