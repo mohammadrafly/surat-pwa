@@ -54,11 +54,11 @@ export default function Home() {
         if (data.token) {
           const cookiesToSet = [
             { key: 'frontend', value: true },
-            { key: 'email', value: data.dataUser[0].email },
+            { key: 'email', value: data.dataUser.email },
             { key: 'token', value: data.token },
-            { key: 'name', value: data.dataUser[0].name },
-            { key: 'role', value: data.dataUser[0].role},
-            { key: 'created_at', value: data.dataUser[0].created_at},
+            { key: 'name', value: data.dataUser.name },
+            { key: 'role', value: data.dataUser.role},
+            { key: 'created_at', value: data.dataUser.created_at},
           ];
           cookiesToSet.forEach(cookie => setCookie(cookie.key, cookie.value));
           router.push('/dashboard');
