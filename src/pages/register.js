@@ -9,14 +9,43 @@ export default function Register() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [nik, setNik] = useState('');
+  const [alamat, setAlamat] = useState('');
+  const [nomor_hp, setNomorHP] = useState('');
+  const [foto_ktp, setFotoKTP] = useState(null);
+  const [error, setError] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedOption, setSelectedOption] = useState('');
+
+  const handleNikChange = (event) => {
+    const inputValue = event.target.value.slice(0, 16);
+    if (inputValue.length > 15) {
+      setError('Maximum length exceeded (16 characters)');
+    } else {
+      setError('');
+      setNik(inputValue);
+    }
+  };
+
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+    setFotoKTP(selectedFile);
+  };
+
+  const handleOptionChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
+
+  const handleCaptureFromCamera = () => {
+    // Implement camera capture functionality
+  };
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true)
-      try {
+      try { 
         const response = await fetch(`${apiEndpoints.auth.signUp}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -69,16 +98,78 @@ export default function Register() {
             {errorMessage && <p className="bg-red-500 rounded-lg text-white text-center p-2 m-5 transition-opacity">{errorMessage}</p>}
             {successMessage && <p className="animate-pulse bg-green-500 rounded-lg text-white text-center p-2 m-5 transition-opacity">{successMessage}</p>}
             <div className="mb-4">
+              <label className="block text-gray-700 font-bold mb-2" htmlFor="upload-option">
+                Choose an Option
+              </label>
+              <select
+                value={selectedOption}
+                onChange={handleOptionChange}
+                className="shadow appearance-none border rounded-[15px] w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="upload-option"
+                required
+              >
+                <option value="">Select an option</option>
+                <option value="file">Upload File</option>
+                <option value="camera">Capture from Camera</option>
+              </select>
+              {selectedOption === 'file' && (
+                <div>
+                  <label className="block text-gray-700 font-bold mt-4" htmlFor="file-upload">
+                    File Upload
+                  </label>
+                  <input
+                    type="file"
+                    onChange={handleFileChange}
+                    className="shadow appearance-none border rounded-[15px] w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="file-upload"
+                    required
+                  />
+                </div>
+              )}
+              {selectedOption === 'camera' && (
+                <div>
+                  <button
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+                    onClick={handleCaptureFromCamera}
+                  >
+                    Capture from Camera
+                  </button>
+                  {/* Add camera capture functionality */}
+                </div>
+              )}
+            </div>
+            <div className="mb-4">
               <label className="block text-gray-700 font-bold mb-2" htmlFor="name">
                 Name
               </label>
               <input
-                type="name"
+                type="text"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
                 className="shadow appearance-none border rounded-[15px] w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 placeholder="Name"
                 required
+              />
+            </div>
+            <div className="mb-4">
+              <div className="flex items-center mb-2">
+                <label className="block text-gray-700 font-bold mr-2" htmlFor="name">
+                  NIK
+                </label>
+                {error && (
+                  <p className="text-red-500 error-message">
+                    {error}
+                  </p>
+                )}
+              </div>
+              <input
+                  type="number"
+                  value={nik}
+                  onChange={handleNikChange}
+                  maxLength={16} // Added maxLength attribute
+                  className="shadow appearance-none border rounded-[15px] w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  placeholder="NIK"
+                  required
               />
             </div>
             <div className="mb-4">

@@ -11,21 +11,29 @@ export default function HistorySuratKelahiran() {
   const router = useRouter();
   const [kelahiranData, setKelahiranData] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
-  const role = getCookieByKey('role');
 
   useEffect(() => {
     const fetchHistorySuratKelahiran = async () => {
       try {
-        const email = getCookieByKey('email');
+        const role = getCookieByKey('role');
         const token = getCookieByKey('token');
-        const response = await fetch(`${apiEndpoints.dashboard.surat.kelahiran}${email}`, {
+        let url = '';
+  
+        if (role === 'admin') {
+          url = `${apiEndpoints.dashboard.surat.kelahiran}`;
+        } else {
+          const email = getCookieByKey('email');
+          url = `${apiEndpoints.dashboard.surat.kelahiran}${email}`;
+        }
+  
+        const response = await fetch(url, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
         });
-
+  
         const data = await response.json();
         setKelahiranData(data);
       } catch (error) {
@@ -33,9 +41,9 @@ export default function HistorySuratKelahiran() {
         setErrorMessage('Unable to fetch kelahiran data. Please try again.');
       }
     };
-
-    Promise.all([fetchHistorySuratKelahiran()]);
-  }, [router]);
+  
+    fetchHistorySuratKelahiran();
+  }, [router]);  
 
   return (
     <>

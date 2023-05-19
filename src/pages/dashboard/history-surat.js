@@ -1,13 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { getCookie, getCookieByKey } from '../../components/helper/Cookie';
+import { getCookieByKey } from '../../components/helper/Cookie';
 import BackButton from '../components/backbutton';
 import BottomNavbar from '../components/BottomNavbarNoSSR';
-import apiEndpoints from '../../../config';
 import MobileMenu from '../components/mobilemenu';
 
 export default function RiwayatSurat() {
-  const router = useRouter();
   const [dashboardData, setDashboardData] = useState({});
 
   const items = [
@@ -74,38 +71,16 @@ export default function RiwayatSurat() {
   ];
 
   useEffect(() => {
-    const fetchDashboardData = async () => {
-      try {
-        const token = getCookieByKey('token');
-        if (!token) {
-          router.push('/');
-          return;
-        }
+    const fetchData = () => {
+      const data = {
+        role: getCookieByKey('role'),
+      };
   
-        const response = await fetch(`${apiEndpoints.dashboard.myProfile}${token}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        });
-  
-        const data = await response.json();
-        setDashboardData(data);
-      } catch (error) {
-        console.error('An error occurred:', error);
-        setErrorMessage('Unable to fetch data. Please try again.');
-      } finally {
-
-      }
+      setDashboardData(data);
     };
   
-    const timeoutId = setTimeout(() => {
-      fetchDashboardData();
-    }, 0);
-  
-    return () => clearTimeout(timeoutId);
-  }, [router]);  
+    fetchData();
+  }, []);
 
   return (
     <>

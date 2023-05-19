@@ -44,20 +44,21 @@ export default function Home() {
             frontend
           })
         });
-  
-        if (response.status === 401) {
-          setErrorMessage('Invalid login credentials.');
-        }
-  
         const data = await response.json();
+
+        if (data.status === false) {
+          setErrorMessage(data.text);
+        }
+
+        console.log(data)
         if (data.token) {
           const cookiesToSet = [
             { key: 'frontend', value: true },
-            { key: 'email', value: data.dataUser.email },
+            { key: 'email', value: data.dataUser[0].email },
             { key: 'token', value: data.token },
-            { key: 'name', value: data.dataUser.name },
-            { key: 'role', value: data.dataUser.role},
-            { key: 'created_at', value: data.dataUser.created_at},
+            { key: 'name', value: data.dataUser[0].name },
+            { key: 'role', value: data.dataUser[0].role},
+            { key: 'created_at', value: data.dataUser[0].created_at},
           ];
           cookiesToSet.forEach(cookie => setCookie(cookie.key, cookie.value));
           router.push('/dashboard');
